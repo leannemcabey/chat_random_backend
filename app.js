@@ -14,8 +14,6 @@ function matchSocketIds(socket1Id, socket2Id) {
 
   io.to(socket1Id).emit('match')
   io.to(socket2Id).emit('match')
-
-  console.log('matched ' + socket1Id + 'with ' + socket2Id)
 }
 
 function unmatchSocketId(socketId, isHop=false) {
@@ -36,8 +34,6 @@ function unmatchSocketId(socketId, isHop=false) {
 }
 
 function findMatch(socketId, avoidSocketId=null) {
-  console.log('trying to match socket id: ' + socketId)
-
   if (!unmatchedSocketIds.length) {
     unmatchedSocketIds.push(socketId)
     return
@@ -70,7 +66,6 @@ io.on("connection", socket => {
 
   socket.on('disconnect', () => {
     unmatchSocketId(socket.id)
-    console.log('umatched socket id: ' + socket.id)
   })
 
   socket.on('chat message', msg => {
@@ -89,9 +84,5 @@ io.on("connection", socket => {
 })
 
 http.listen(9000, () => console.log('listening on *:9000'))
-
-
-// If a user types /delay 1000 hello, then the message hello should be relayed to their chat partner with a delay of 1000 ms.
-// If a user types /hop then attempt to repair with another user or wait until another is available.
 
 module.exports = app;
